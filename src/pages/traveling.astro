@@ -1,0 +1,149 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Nav from "@/components/nav.astro";
+import Footer from "@/components/footer.astro";
+
+const travels = [
+  {
+    date: "2021.07",
+    title: "第一次一个人旅行",
+    desc: "去杭州待了 3 天，开始喜欢记录路上的细节。",
+  },
+  {
+    date: "2022.10",
+    title: "海边徒步",
+    desc: "沿海线徒步，第一次完整看日出到日落。",
+  },
+  {
+    date: "2023.12",
+    title: "冬季城市漫游",
+    desc: "用相机记录街道和夜景，也写下了很多随笔。",
+  },
+  {
+    date: "2025.04",
+    title: "山路公路旅行",
+    desc: "在山间公路上停靠多个小镇，体验慢节奏旅程。",
+  },
+];
+---
+
+<Layout title="Traveling | Zeno's Manor">
+  <Nav />
+  <main class="text-[var(--white)] max-w-5xl mx-auto pt-28 pb-24">
+    <section id="traveling">
+      <p class="text-[var(--sec)] mb-2">On the road</p>
+      <h1 class="text-4xl md:text-5xl font-semibold mb-10">Traveling</h1>
+
+      <div class="timeline">
+        {travels.map((item) => (
+          <article class="timeline-item">
+            <div class="timeline-content">
+              <time>{item.date}</time>
+              <h2>{item.title}</h2>
+              <p>{item.desc}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  .timeline {
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 30px 0;
+  }
+
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 2px;
+    height: 100%;
+    background: #2a2a2a;
+    transform: translateX(-50%);
+  }
+
+  .timeline-item {
+    position: relative;
+    width: 50%;
+    padding: 18px 34px;
+  }
+
+  .timeline-item::before {
+    content: "";
+    position: absolute;
+    top: 30px;
+    width: 14px;
+    height: 14px;
+    border-radius: 9999px;
+    background: var(--sec);
+    box-shadow: 0 0 14px #a476ffaa;
+  }
+
+  .timeline-item:nth-child(odd) {
+    left: 0;
+    text-align: right;
+  }
+
+  .timeline-item:nth-child(odd)::before {
+    right: -7px;
+  }
+
+  .timeline-item:nth-child(even) {
+    left: 50%;
+  }
+
+  .timeline-item:nth-child(even)::before {
+    left: -7px;
+  }
+
+  .timeline-content {
+    border: 1px solid #ffffff18;
+    border-radius: 14px;
+    background: #151515;
+    padding: 18px 20px;
+  }
+
+  .timeline-content time {
+    color: var(--white-icon);
+    font-size: 14px;
+  }
+
+  .timeline-content h2 {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    font-size: 1.25rem;
+  }
+
+  .timeline-content p {
+    color: var(--white-icon);
+    line-height: 1.7;
+  }
+
+  @media (max-width: 768px) {
+    .timeline::before {
+      left: 10px;
+    }
+
+    .timeline-item,
+    .timeline-item:nth-child(even) {
+      width: 100%;
+      left: 0;
+      text-align: left;
+      padding: 12px 0 12px 36px;
+    }
+
+    .timeline-item::before,
+    .timeline-item:nth-child(odd)::before,
+    .timeline-item:nth-child(even)::before {
+      left: 3px;
+      right: auto;
+    }
+  }
+</style>
