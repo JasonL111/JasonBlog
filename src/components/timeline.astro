@@ -1,0 +1,122 @@
+---
+const items = [
+  {
+    date: "2021",
+    title: "开始接触前端",
+    desc: "学习 HTML、CSS、JavaScript。",
+  },
+  {
+    date: "2022",
+    title: "第一次做项目",
+    desc: "开始写自己的博客和小型练手项目。",
+  },
+  {
+    date: "2023",
+    title: "使用 Astro",
+    desc: "尝试做内容型网站和组件化开发。",
+  },
+  {
+    date: "2024",
+    title: "继续迭代",
+    desc: "加入动画、暗黑模式和响应式设计。",
+  },
+];
+---
+
+<section   
+  id="projects"
+  class="timeline"
+>
+  {items.map((item) => (
+    <article class="timeline-item">
+      <div class="timeline-marker"></div>
+
+      <div class="timeline-content">
+        <time class="timeline-date">{item.date}</time>
+        <h3>{item.title}</h3>
+        <p>{item.desc}</p>
+      </div>
+    </article>
+  ))}
+</section>
+
+<style>
+  .timeline {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 60px 0;
+}
+
+/* 中轴线 */
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  width: 2px;
+  height: 100%;
+  background: #1f2937;
+  transform: translateX(-50%);
+}
+
+.timeline-item {
+  position: relative;
+  width: 50%;
+  padding: 20px 40px;
+}
+
+.timeline-item:nth-child(odd) {
+  left: 0;
+  text-align: right;
+}
+
+.timeline-item:nth-child(even) {
+  left: 50%;
+}
+
+/* 圆点 */
+
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  top: 28px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #8b5cf6;
+  box-shadow: 0 0 12px rgba(139, 92, 246, 0.6);
+}
+
+.timeline-item:nth-child(odd)::before {
+  right: -7px;
+}
+
+.timeline-item:nth-child(even)::before {
+  left: -7px;
+}
+
+/* 卡片 */
+
+.timeline-content {
+  background: #111827;
+  border: 1px solid #1f2937;
+  padding: 20px 24px;
+  border-radius: 12px;
+}
+
+.timeline-content h3 {
+  color: #e5e7eb;
+  margin-bottom: 6px;
+}
+
+.timeline-content time {
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+.timeline-content p {
+  color: #9ca3af;
+  margin-top: 8px;
+}
+</style>
