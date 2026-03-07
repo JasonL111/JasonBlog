@@ -4,17 +4,26 @@ import Nav from "@/components/nav.astro";
 import Footer from "@/components/footer.astro";
 import { getCollection } from "astro:content";
 
-const holdings = (await getCollection("investments"))
+const portfolioEntries = await getCollection("investments");
+const portfolio = portfolioEntries[0]?.data;
+
+const palette = ["#A476FF", "#60A5FA", "#34D399", "#FCD34D", "#F472B6", "#FB7185"];
+const rawHoldings = portfolio?.holdings ?? [];
+
+const holdings = rawHoldings
   .map((item, index) => ({
-    name: item.data.name,
-    ratio: item.data.ratio,
-    color: item.data.color ?? ["#A476FF", "#60A5FA", "#34D399", "#FCD34D"][index % 4],
-    note: item.data.note,
+    ...item,
+    color: item.color ?? palette[index % palette.length],
   }))
   .sort((a, b) => b.ratio - a.ratio);
 
 const total = holdings.reduce((sum, h) => sum + h.ratio, 0);
-const normalized = total > 0 ? holdings.map((h) => ({ ...h, ratio: (h.ratio / total) * 100 })) : holdings;
+const cashRatio = total < 100 ? Number((100 - total).toFixed(2)) : 0;
+
+const displayHoldings =
+  cashRatio > 0
+    ? [...holdings, { name: "Cash", ratio: cashRatio, color: "#34D399", note: "自动补足未配置比例" }]
+    : holdings;
 
 const radius = 120;
 const cx = 150;
@@ -36,7 +45,7 @@ function describeArc(startAngle: number, endAngle: number) {
 }
 
 let currentAngle = 0;
-const slices = normalized.map((item) => {
+const slices = displayHoldings.map((item) => {
   const sliceAngle = (item.ratio / 100) * 360;
   const startAngle = currentAngle;
   const endAngle = currentAngle + sliceAngle;
@@ -47,6 +56,8 @@ const slices = normalized.map((item) => {
     path: describeArc(startAngle, endAngle),
   };
 });
+
+const recentActions = (portfolio?.recentActions ?? []).slice(0, 3);
 ---
 
 <Layout title="Investment Portfolio | Zeno's Manor">
@@ -59,7 +70,7 @@ const slices = normalized.map((item) => {
       <div class="card flex justify-center">
         {
           slices.length === 0 ? (
-            <p class="text-[var(--white-icon)]">请在 <code>src/content/investments</code> 放置 md 持仓文件。</p>
+            <p class="text-[var(--white-icon)]">请在 <code>src/content/investments/portfolio.md</code> 填写持仓。</p>
           ) : (
             <svg viewBox="0 0 300 300" class="w-[280px] h-[280px]">
               {slices.map((slice) => (
@@ -74,17 +85,36 @@ const slices = normalized.map((item) => {
       </div>
 
       <div class="card space-y-3">
-        {normalized.map((item) => (
+        {displayHoldings.map((item) => (
           <div class="holding-row">
             <div class="flex items-center gap-2">
               <span class="dot" style={`background:${item.color};`} />
               <strong>{item.name}</strong>
             </div>
-            <span class="text-[var(--white-icon)]">{item.ratio.toFixed(1)}%</span>
+            <span class="text-[var(--white-icon)]">{item.ratio.toFixed(2)}%</span>
             {item.note && <p class="text-sm text-[var(--white-icon)] col-span-2">{item.note}</p>}
           </div>
         ))}
       </div>
+    </section>
+
+    <section class="card mt-8">
+      <h3 class="text-2xl font-semibold mb-4">近期操作</h3>
+      {
+        recentActions.length === 0 ? (
+          <p class="text-[var(--white-icon)]">请在同一个持仓 md 中补充 <code>recentActions</code>（最多 3 条）。</p>
+        ) : (
+          <ul class="space-y-3">
+            {recentActions.map((item) => (
+              <li class="action-row">
+                <div class="text-sm text-[var(--white-icon)]">{item.date}</div>
+                <div class="font-semibold">{item.action}</div>
+                {item.detail && <div class="text-sm text-[var(--white-icon)] mt-1">{item.detail}</div>}
+              </li>
+            ))}
+          </ul>
+        )
+      }
     </section>
   </main>
   <Footer />
@@ -116,5 +146,12 @@ const slices = normalized.map((item) => {
     height: 0.75rem;
     border-radius: 999px;
     display: inline-block;
+  }
+
+  .action-row {
+    border: 1px solid #ffffff14;
+    border-radius: 12px;
+    padding: 0.8rem 0.9rem;
+    background: #101010;
   }
 </style>
