@@ -1,0 +1,70 @@
+---
+import { getCollection } from "astro:content";
+
+const recentPosts = (await getCollection("blog"))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 2);
+---
+
+<section class="py-12 border-t border-[#ffffff10] text-[var(--white)]">
+  <div class="max-w-5xl mx-auto">
+    <div class="flex items-end justify-between gap-4 mb-7">
+      <div>
+        <h2 class="text-lg text-[var(--sec)] mb-2">Latest writing</h2>
+        <h3 class="text-3xl md:text-4xl font-medium">Recent Posts</h3>
+      </div>
+      <a href="/blog" class="go-blog-btn">查看更多 Blog</a>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-4">
+      {recentPosts.map((post) => (
+        <article class="post-card">
+          <h4>
+            <a class="post-link" href={`/blog/${post.slug}`}>{post.data.title}</a>
+          </h4>
+          <time class="text-sm text-[var(--white-icon)] block mt-2">
+            {post.data.date.toLocaleDateString("zh-CN")}
+          </time>
+          {post.data.summary && (
+            <p class="mt-2 text-[var(--white-icon)]">{post.data.summary}</p>
+          )}
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .post-card {
+    background: #141414;
+    border: 1px solid #ffffff14;
+    border-radius: 14px;
+    padding: 1rem 1.2rem;
+  }
+
+  .post-link {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+
+  .post-link:hover {
+    color: var(--sec);
+    text-decoration: underline;
+  }
+
+  .go-blog-btn {
+    color: var(--white);
+    border: 1px solid #ffffff2e;
+    border-radius: 999px;
+    padding: 0.55rem 1rem;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .go-blog-btn:hover {
+    border-color: var(--sec);
+    color: var(--sec);
+  }
+</style>

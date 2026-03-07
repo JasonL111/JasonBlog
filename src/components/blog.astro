@@ -1,0 +1,66 @@
+---
+import { getCollection } from "astro:content";
+
+const blogEntries = await getCollection("blog");
+
+const posts = blogEntries
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .map((entry) => ({
+    slug: entry.slug,
+    ...entry.data,
+  }));
+---
+
+<section class="py-16 text-[var(--white)]">
+  <div class="max-w-4xl mx-auto">
+    <h2 class="text-lg text-[var(--sec)] mb-2">My notes</h2>
+    <h3 class="text-4xl md:text-5xl font-medium mb-8">Blog</h3>
+
+    {
+      posts.length === 0 ? (
+        <p class="text-[var(--white-icon)]">
+          把你的 Markdown 文件放到 <code>src/content/blog</code>，这里会自动显示。
+        </p>
+      ) : (
+        <div class="space-y-4">
+          {posts.map((post) => (
+            <article class="blog-list-item">
+              <h4>
+                <a class="blog-link" href={`/blog/${post.slug}`}>
+                  {post.title}
+                </a>
+              </h4>
+              <time class="text-sm text-[var(--white-icon)] block mt-1">
+                {post.date.toLocaleDateString("zh-CN")}
+              </time>
+              {post.summary && (
+                <p class="mt-2 text-[var(--white-icon)]">{post.summary}</p>
+              )}
+            </article>
+          ))}
+        </div>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .blog-list-item {
+    background: #141414;
+    border: 1px solid #ffffff14;
+    border-radius: 14px;
+    padding: 1rem 1.2rem;
+  }
+
+  .blog-link {
+    color: #ffffff;
+    font-size: 1.3rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .blog-link:hover {
+    text-decoration: underline;
+    color: var(--sec);
+  }
+</style>

@@ -1,0 +1,120 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Nav from "@/components/nav.astro";
+import Footer from "@/components/footer.astro";
+import { getCollection } from "astro:content";
+
+const holdings = (await getCollection("investments"))
+  .map((item, index) => ({
+    name: item.data.name,
+    ratio: item.data.ratio,
+    color: item.data.color ?? ["#A476FF", "#60A5FA", "#34D399", "#FCD34D"][index % 4],
+    note: item.data.note,
+  }))
+  .sort((a, b) => b.ratio - a.ratio);
+
+const total = holdings.reduce((sum, h) => sum + h.ratio, 0);
+const normalized = total > 0 ? holdings.map((h) => ({ ...h, ratio: (h.ratio / total) * 100 })) : holdings;
+
+const radius = 120;
+const cx = 150;
+const cy = 150;
+
+function polarToCartesian(centerX: number, centerY: number, r: number, angleInDegrees: number) {
+  const angleInRadians = ((angleInDegrees - 90) * Math.PI) / 180;
+  return {
+    x: centerX + r * Math.cos(angleInRadians),
+    y: centerY + r * Math.sin(angleInRadians),
+  };
+}
+
+function describeArc(startAngle: number, endAngle: number) {
+  const start = polarToCartesian(cx, cy, radius, endAngle);
+  const end = polarToCartesian(cx, cy, radius, startAngle);
+  const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
+  return `M ${cx} ${cy} L ${start.x} ${start.y} A ${radius} ${radius} 0 ${largeArcFlag} 0 ${end.x} ${end.y} Z`;
+}
+
+let currentAngle = 0;
+const slices = normalized.map((item) => {
+  const sliceAngle = (item.ratio / 100) * 360;
+  const startAngle = currentAngle;
+  const endAngle = currentAngle + sliceAngle;
+  currentAngle = endAngle;
+
+  return {
+    ...item,
+    path: describeArc(startAngle, endAngle),
+  };
+});
+---
+
+<Layout title="Investment Portfolio | Zeno's Manor">
+  <Nav />
+  <main class="max-w-5xl mx-auto pt-28 pb-16 text-[var(--white)]">
+    <h2 class="text-lg text-[var(--sec)] mb-2">Asset allocation</h2>
+    <h1 class="text-4xl md:text-5xl font-medium mb-10">Investment Portfolio</h1>
+
+    <section class="grid md:grid-cols-2 gap-8 items-start">
+      <div class="card flex justify-center">
+        {
+          slices.length === 0 ? (
+            <p class="text-[var(--white-icon)]">请在 <code>src/content/investments</code> 放置 md 持仓文件。</p>
+          ) : (
+            <svg viewBox="0 0 300 300" class="w-[280px] h-[280px]">
+              {slices.map((slice) => (
+                <path d={slice.path} fill={slice.color} stroke="#101010" stroke-width="2" />
+              ))}
+              <circle cx="150" cy="150" r="52" fill="#101010" />
+              <text x="150" y="145" text-anchor="middle" fill="#dfdfdf" font-size="13">Total</text>
+              <text x="150" y="165" text-anchor="middle" fill="#ffffff" font-size="18">100%</text>
+            </svg>
+          )
+        }
+      </div>
+
+      <div class="card space-y-3">
+        {normalized.map((item) => (
+          <div class="holding-row">
+            <div class="flex items-center gap-2">
+              <span class="dot" style={`background:${item.color};`} />
+              <strong>{item.name}</strong>
+            </div>
+            <span class="text-[var(--white-icon)]">{item.ratio.toFixed(1)}%</span>
+            {item.note && <p class="text-sm text-[var(--white-icon)] col-span-2">{item.note}</p>}
+          </div>
+        ))}
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  .card {
+    background: #141414;
+    border: 1px solid #ffffff14;
+    border-radius: 16px;
+    padding: 1.25rem;
+  }
+
+  .holding-row {
+    border-bottom: 1px solid #ffffff12;
+    padding-bottom: 0.75rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.35rem 0.5rem;
+  }
+
+  .holding-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .dot {
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 999px;
+    display: inline-block;
+  }
+</style>

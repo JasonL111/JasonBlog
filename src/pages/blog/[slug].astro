@@ -1,0 +1,73 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Nav from "@/components/nav.astro";
+import Footer from "@/components/footer.astro";
+import { getCollection, render } from "astro:content";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<Layout title={`${post.data.title} | Blog`}>
+  <Nav />
+  <main class="max-w-3xl mx-auto pt-28 pb-16 text-[var(--white)]">
+    <a href="/blog" class="text-[var(--sec)] hover:underline">← 返回 Blog 列表</a>
+
+    <article class="detail-card mt-6">
+      <h1 class="text-4xl font-semibold">{post.data.title}</h1>
+      <time class="text-sm text-[var(--white-icon)] block mt-3">
+        {post.data.date.toLocaleDateString("zh-CN")}
+      </time>
+      {post.data.summary && (
+        <p class="mt-4 text-[var(--white-icon)]">{post.data.summary}</p>
+      )}
+
+      <div class="post-body mt-8">
+        <Content />
+      </div>
+    </article>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  .detail-card {
+    background: #141414;
+    border: 1px solid #ffffff14;
+    border-radius: 16px;
+    padding: 1.5rem;
+  }
+
+  .post-body :global(h1),
+  .post-body :global(h2),
+  .post-body :global(h3) {
+    margin-top: 1rem;
+    margin-bottom: 0.6rem;
+    color: #ffffff;
+  }
+
+  .post-body :global(p),
+  .post-body :global(li) {
+    color: #d4d4d4;
+    line-height: 1.75;
+  }
+
+  .post-body :global(ul),
+  .post-body :global(ol) {
+    margin-left: 1.2rem;
+  }
+
+  .post-body :global(code) {
+    background: #232323;
+    border-radius: 6px;
+    padding: 0.1rem 0.35rem;
+  }
+</style>
