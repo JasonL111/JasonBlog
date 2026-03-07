@@ -1,22 +1,17 @@
 ---
-import { getCollection, render } from "astro:content";
+import { getCollection } from "astro:content";
 
 const blogEntries = await getCollection("blog");
 
-const posts = (
-  await Promise.all(
-    blogEntries.map(async (entry) => {
-      const { Content } = await render(entry);
-      return {
-        ...entry.data,
-        Content,
-      };
-    })
-  )
-).sort((a, b) => b.date.getTime() - a.date.getTime());
+const posts = blogEntries
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .map((entry) => ({
+    slug: entry.slug,
+    ...entry.data,
+  }));
 ---
 
-<section id="blog" class="py-16 border-t border-[#ffffff10] text-[var(--white)]">
+<section class="py-16 text-[var(--white)]">
   <div class="max-w-4xl mx-auto">
     <h2 class="text-lg text-[var(--sec)] mb-2">My notes</h2>
     <h3 class="text-4xl md:text-5xl font-medium mb-8">Blog</h3>
@@ -27,21 +22,20 @@ const posts = (
           把你的 Markdown 文件放到 <code>src/content/blog</code>，这里会自动显示。
         </p>
       ) : (
-        <div class="space-y-8">
+        <div class="space-y-4">
           {posts.map((post) => (
-            <article class="blog-card">
-              <header class="mb-4">
-                <h4 class="text-2xl font-semibold">{post.title}</h4>
-                <time class="text-sm text-[var(--white-icon)]">
-                  {post.date.toLocaleDateString("zh-CN")}
-                </time>
-                {post.summary && (
-                  <p class="mt-2 text-[var(--white-icon)]">{post.summary}</p>
-                )}
-              </header>
-              <div class="blog-content">
-                <post.Content />
-              </div>
+            <article class="blog-list-item">
+              <h4>
+                <a class="blog-link" href={`/blog/${post.slug}`}>
+                  {post.title}
+                </a>
+              </h4>
+              <time class="text-sm text-[var(--white-icon)] block mt-1">
+                {post.date.toLocaleDateString("zh-CN")}
+              </time>
+              {post.summary && (
+                <p class="mt-2 text-[var(--white-icon)]">{post.summary}</p>
+              )}
             </article>
           ))}
         </div>
@@ -51,35 +45,22 @@ const posts = (
 </section>
 
 <style>
-  .blog-card {
+  .blog-list-item {
     background: #141414;
     border: 1px solid #ffffff14;
-    border-radius: 16px;
-    padding: 1.5rem;
+    border-radius: 14px;
+    padding: 1rem 1.2rem;
   }
 
-  .blog-content :global(h1),
-  .blog-content :global(h2),
-  .blog-content :global(h3) {
-    margin-top: 1rem;
-    margin-bottom: 0.5rem;
+  .blog-link {
     color: #ffffff;
+    font-size: 1.3rem;
+    font-weight: 600;
+    text-decoration: none;
   }
 
-  .blog-content :global(p),
-  .blog-content :global(li) {
-    color: #d4d4d4;
-    line-height: 1.75;
-  }
-
-  .blog-content :global(ul),
-  .blog-content :global(ol) {
-    margin-left: 1.25rem;
-  }
-
-  .blog-content :global(code) {
-    background: #232323;
-    border-radius: 6px;
-    padding: 0.1rem 0.35rem;
+  .blog-link:hover {
+    text-decoration: underline;
+    color: var(--sec);
   }
 </style>
