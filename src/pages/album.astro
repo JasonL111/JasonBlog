@@ -1,0 +1,73 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Nav from "@/components/nav.astro";
+import Footer from "@/components/footer.astro";
+
+const photos = [
+  {
+    src: "/og.image.png",
+    title: "日常记录",
+    desc: "从项目到生活，持续更新中。",
+  },
+  {
+    src: "/velez.png",
+    title: "城市角落",
+    desc: "旅行中随手拍下的瞬间。",
+  },
+  {
+    src: "/moviesfordevs.png",
+    title: "灵感来源",
+    desc: "电影、音乐、阅读的碎片。",
+  },
+];
+---
+
+<Layout title="Album | Zeno's Manor">
+  <Nav />
+  <main class="max-w-5xl mx-auto pt-28 pb-16 text-[var(--white)]">
+    <h2 class="text-lg text-[var(--sec)] mb-2">Visual notes</h2>
+    <h1 class="text-4xl md:text-5xl font-medium mb-10">Album</h1>
+
+    <section class="grid md:grid-cols-3 gap-6">
+      {
+        photos.map((photo) => (
+          <article class="album-card">
+            <img src={photo.src} alt={photo.title} loading="lazy" />
+            <div class="p-4">
+              <h3>{photo.title}</h3>
+              <p>{photo.desc}</p>
+            </div>
+          </article>
+        ))
+      }
+    </section>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  .album-card {
+    border: 1px solid #ffffff14;
+    border-radius: 16px;
+    background: #141414;
+    overflow: hidden;
+  }
+
+  .album-card img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-bottom: 1px solid #ffffff14;
+  }
+
+  .album-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .album-card p {
+    color: var(--white-icon);
+    line-height: 1.6;
+    font-size: 0.95rem;
+  }
+</style>
