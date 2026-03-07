@@ -77,11 +77,9 @@ import Footer from "@/components/footer.astro";
     background-size: cover;
     cursor: pointer;
     position: relative;
-    transition: transform 0.25s ease;
     outline: none;
   }
 
-  .box-content:hover,
   .box-content:focus-visible {
     transform: scale(1.02);
   }
@@ -219,6 +217,7 @@ import Footer from "@/components/footer.astro";
 
     Flip.from(state, {
       duration: 0.7,
+      absolute: true,
       ease: "power1.inOut",
     });
 
