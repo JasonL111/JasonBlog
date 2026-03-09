@@ -62,17 +62,17 @@ const recentActions = (portfolio?.recentActions ?? []).slice(0, 3);
 
 <Layout title="Investment Portfolio | Jason's Manor">
   <Nav />
-  <main class="max-w-5xl mx-auto pt-28 pb-16 text-[var(--white)]">
+  <main class="max-w-5xl mx-auto px-4 md:px-6 pt-24 md:pt-28 pb-16 text-[var(--white)]">
     <h2 class="text-lg text-[var(--sec)] mb-2">Asset allocation</h2>
     <h1 class="text-4xl md:text-5xl font-medium mb-10">Investment Portfolio</h1>
 
-    <section class="grid md:grid-cols-2 gap-8 items-start">
-      <div class="card flex justify-center">
+    <section class="grid md:grid-cols-2 gap-5 md:gap-8 items-start">
+      <div class="card chart-card flex justify-center">
         {
           slices.length === 0 ? (
             <p class="text-[var(--white-icon)]">请在 <code>src/content/investments/portfolio.md</code> 填写持仓。</p>
           ) : (
-            <svg viewBox="0 0 300 300" class="w-[280px] h-[280px]">
+            <svg viewBox="0 0 300 300" class="chart-svg">
               {slices.map((slice) => (
                 <path d={slice.path} fill={slice.color} stroke="#101010" stroke-width="2" />
               ))}
@@ -154,4 +154,40 @@ const recentActions = (portfolio?.recentActions ?? []).slice(0, 3);
     padding: 0.8rem 0.9rem;
     background: #101010;
   }
+
+  .chart-svg {
+    width: min(100%, 280px);
+    height: auto;
+  }
+
+  .chart-card {
+    min-height: 320px;
+    align-items: center;
+  }
+
+  @media (max-width: 768px) {
+    .card {
+      padding: 1rem;
+      border-radius: 14px;
+    }
+
+    .chart-card {
+      min-height: auto;
+      padding: 0.9rem;
+    }
+
+    .chart-svg {
+      width: min(100%, 240px);
+    }
+
+    .holding-row {
+      gap: 0.3rem;
+      font-size: 0.95rem;
+    }
+
+    .action-row {
+      padding: 0.7rem 0.75rem;
+    }
+  }
+
 </style>

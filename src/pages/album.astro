@@ -1,7 +1,24 @@
 ---
+import fs from "node:fs";
+import path from "node:path";
 import Layout from "@/layouts/Layout.astro";
 import Nav from "@/components/nav.astro";
 import Footer from "@/components/footer.astro";
+
+const albumPublicDir = "/FavPic";
+const albumSourceDir = path.join(process.cwd(), "public", "FavPic");
+const imagePattern = /\.(avif|gif|jpe?g|png|webp)$/i;
+
+const albumPhotos = fs.existsSync(albumSourceDir)
+  ? fs
+      .readdirSync(albumSourceDir)
+      .filter((file) => imagePattern.test(file))
+      .sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" }))
+      .map((file, index) => ({
+        src: `${albumPublicDir}/${file}`,
+        alt: `Album photo ${index + 1}`,
+      }))
+  : [];
 ---
 
 <Layout title="Album | Jason's Manor">
@@ -11,46 +28,21 @@ import Footer from "@/components/footer.astro";
       <h2 class="text-lg text-[var(--sec)] mb-2">Visual notes</h2>
       <h1 class="text-4xl md:text-5xl font-medium mb-8 md:mb-10">Album</h1>
 
-      <div class="wrapper">
-        <div class="boxes-container">
-          <div class="box">
-            <div class="box-content one" aria-label="photo one" role="button" tabindex="0"></div>
+      {
+        albumPhotos.length === 0 ? (
+          <p class="text-[var(--white-icon)] border border-dashed border-white/20 rounded-xl p-4">
+            未在 <code>public/FavPic</code> 检测到图片。请把图片放进该目录，Album 会自动读取并展示。
+          </p>
+        ) : (
+          <div class="wrapper">
+            <div class="boxes-container">
+              {albumPhotos.map((photo, index) => (
+                <button class="box box-content" type="button" style={`background-image:url('${photo.src}')`} aria-label={photo.alt} data-index={index}></button>
+              ))}
+            </div>
           </div>
-          <div class="box">
-            <div class="box-content two" aria-label="photo two" role="button" tabindex="0"></div>
-          </div>
-          <div class="box">
-            <div class="box-content three" aria-label="photo three" role="button" tabindex="0"></div>
-          </div>
-          <div class="box">
-            <div class="box-content four" aria-label="photo four" role="button" tabindex="0"></div>
-          </div>
-          <div class="box">
-            <div class="box-content five" aria-label="photo five" role="button" tabindex="0"></div>
-          </div>
-          <div class="box">
-            <div class="box-content six" aria-label="photo six" role="button" tabindex="0"></div>
-          </div>
-                    <div class="box">
-            <div class="box-content seven" aria-label="photo seven" role="button" tabindex="0"></div>
-          </div>
-          <div class="box">
-            <div class="box-content eight" aria-label="photo eight" role="button" tabindex="0"></div>
-          </div>
-          <div class="box">
-            <div class="box-content nine" aria-label="photo nine" role="button" tabindex="0"></div>
-          </div>
-          <div class="box">
-            <div class="box-content ten" aria-label="photo ten" role="button" tabindex="0"></div>
-          </div>
-          <div class="box">
-            <div class="box-content eleven" aria-label="photo eleven" role="button" tabindex="0"></div>
-          </div>
-          <div class="box">
-            <div class="box-content twelve" aria-label="photo twelve" role="button" tabindex="0"></div>
-          </div>
-        </div>
-      </div>
+        )
+      }
     </section>
   </main>
   <Footer />
@@ -80,26 +72,18 @@ import Footer from "@/components/footer.astro";
     padding: 0.35rem;
     border: 1px dashed #ffffff2d;
     border-radius: 12px;
-    background: #151515;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-  }
-
-  .box-content {
-    width: 100%;
-    height: 100%;
-    border-radius: 10px;
+    background-color: #151515;
     background-position: center;
     background-size: cover;
     cursor: pointer;
-    position: relative;
     outline: none;
+    transition: transform 0.2s ease;
+    will-change: transform;
   }
 
-  .box-content:focus-visible {
-    transform: scale(1.02);
+  .box:hover,
+  .box:focus-visible {
+    transform: translateY(-2px);
   }
 
   .modal {
@@ -124,11 +108,13 @@ import Footer from "@/components/footer.astro";
     max-width: 90vw;
   }
 
-  .modal .content .box-content {
+  .modal .content .box {
     width: 100%;
     height: 100%;
     box-shadow: 0 20px 60px #00000080;
     border-radius: 16px;
+    border-style: solid;
+    transform: none;
   }
 
   .overlay {
@@ -138,52 +124,6 @@ import Footer from "@/components/footer.astro";
     height: 100%;
     background-color: black;
     opacity: 0;
-  }
-
-  .box-content.one {
-    background-image: url("/FavPic/photo_2_2026-03-09_18-49-30.jpg");
-  }
-
-  .box-content.two {
-    background-image: url("/FavPic/photo_3_2026-03-09_18-49-30.jpg");
-  }
-
-  .box-content.three {
-    background-image: url("/FavPic/photo_4_2026-03-09_18-49-30.jpg");
-  }
-
-  .box-content.four {
-    background-image: url("/FavPic/photo_9_2026-03-09_18-49-30.jpg");
-  }
-
-  .box-content.five {
-    background-image: url("/FavPic/photo_6_2026-03-09_18-49-30.jpg");
-  }
-
-  .box-content.six {
-    background-image: url("/FavPic/photo_7_2026-03-09_18-49-30.jpg");
-  }
-  .box-content.seven {
-    background-image: url("/FavPic/photo_8_2026-03-09_18-49-30.jpg");
-  }
-
-  .box-content.eight {
-    background-image: url("/FavPic/photo_10_2026-03-09_18-49-30.jpg");
-  }
-
-  .box-content.nine {
-    background-image: url("/FavPic/photo_11_2026-03-09_18-49-30.jpg");
-  }
-
-  .box-content.ten {
-    background-image: url("/FavPic/photo_12_2026-03-09_18-49-30.jpg");
-  }
-  .box-content.eleven {
-    background-image: url("/FavPic/photo_13_2026-03-09_18-49-30.jpg");
-  }
-
-  .box-content.twelve {
-    background-image: url("/FavPic/photo_15_2026-03-09_18-49-30.jpg");
   }
 
   @media (max-width: 1024px) {
@@ -203,9 +143,15 @@ import Footer from "@/components/footer.astro";
     }
 
     .modal .content {
-      width: min(86vw, 400px);
+      width: min(88vw, 400px);
       height: auto;
       max-height: 85vh;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .box {
+      transition: none;
     }
   }
 </style>
@@ -220,66 +166,84 @@ import Footer from "@/components/footer.astro";
   const modalContent = modal?.querySelector(".content");
   const modalOverlay = modal?.querySelector(".overlay");
   const boxes = gsap.utils.toArray(".boxes-container .box");
-  const boxesContent = gsap.utils.toArray(".box-content");
 
-  let boxIndex;
+  let activeBox;
+  let activeIndex = -1;
+  const boxesContainer = document.querySelector(".boxes-container");
 
-  const toggleBox = (box, i) => {
-    if (!modal || !modalContent || !modalOverlay) return;
+  const closeModal = () => {
+    if (!modal || !modalContent || !modalOverlay || !activeBox) return;
 
-    if (boxIndex !== undefined) {
-      const state = Flip.getState(box);
-      boxes[boxIndex].appendChild(box);
-      boxIndex = undefined;
+    if (!boxesContainer) return;
 
-      gsap.to([modal, modalOverlay], {
-        autoAlpha: 0,
-        ease: "power1.inOut",
-        duration: 0.35,
-      });
+    const state = Flip.getState(activeBox);
+    const siblings = boxesContainer.querySelectorAll(".box");
+    const anchor = siblings[activeIndex] ?? null;
 
-      Flip.from(state, {
-        duration: 0.7,
-        ease: "power1.inOut",
-        absolute: true,
-        onComplete: () => gsap.set(box, { zIndex: "auto" }),
-      });
-
-      gsap.set(box, { zIndex: 1102 });
-      return;
+    if (anchor) {
+      boxesContainer.insertBefore(activeBox, anchor);
+    } else {
+      boxesContainer.appendChild(activeBox);
     }
+
+    activeBox = undefined;
+    activeIndex = -1;
+
+    gsap.to([modal, modalOverlay], {
+      autoAlpha: 0,
+      ease: "power2.inOut",
+      duration: 0.25,
+      overwrite: "auto",
+    });
+
+    Flip.from(state, {
+      duration: 0.45,
+      ease: "power2.inOut",
+      absolute: true,
+      simple: true,
+      onComplete: () => gsap.set(boxes, { clearProps: "zIndex" }),
+    });
+  };
+
+  const openModal = (box) => {
+    if (!modal || !modalContent || !modalOverlay) return;
 
     const state = Flip.getState(box);
     modalContent.appendChild(box);
-    boxIndex = i;
+    activeBox = box;
+    activeIndex = Number(box.dataset.index ?? -1);
 
     gsap.set(modal, { autoAlpha: 1 });
 
     Flip.from(state, {
-      duration: 0.7,
+      duration: 0.45,
       absolute: true,
-      ease: "power1.inOut",
+      simple: true,
+      ease: "power2.out",
     });
 
     gsap.to(modalOverlay, {
       autoAlpha: 0.65,
-      duration: 0.35,
+      duration: 0.25,
+      overwrite: "auto",
     });
   };
 
-  boxesContent.forEach((box, i) => {
-    box.addEventListener("click", () => toggleBox(box, i));
-    box.addEventListener("keydown", (event) => {
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
-        toggleBox(box, i);
+  boxes.forEach((box) => {
+    box.addEventListener("click", () => {
+      if (activeBox) {
+        closeModal();
+      } else {
+        openModal(box);
       }
     });
   });
 
-  modalOverlay?.addEventListener("click", () => {
-    if (boxIndex === undefined) return;
-    const activeBox = boxesContent[boxIndex];
-    toggleBox(activeBox, boxIndex);
+  modalOverlay?.addEventListener("click", closeModal);
+
+  window.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeModal();
+    }
   });
 </script>
