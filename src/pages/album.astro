@@ -1,0 +1,285 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Nav from "@/components/nav.astro";
+import Footer from "@/components/footer.astro";
+---
+
+<Layout title="Album | Jason's Manor">
+  <Nav />
+  <main class="album-page text-[var(--white)] pt-24 md:pt-28 pb-16">
+    <section class="max-w-6xl mx-auto px-4 md:px-6">
+      <h2 class="text-lg text-[var(--sec)] mb-2">Visual notes</h2>
+      <h1 class="text-4xl md:text-5xl font-medium mb-8 md:mb-10">Album</h1>
+
+      <div class="wrapper">
+        <div class="boxes-container">
+          <div class="box">
+            <div class="box-content one" aria-label="photo one" role="button" tabindex="0"></div>
+          </div>
+          <div class="box">
+            <div class="box-content two" aria-label="photo two" role="button" tabindex="0"></div>
+          </div>
+          <div class="box">
+            <div class="box-content three" aria-label="photo three" role="button" tabindex="0"></div>
+          </div>
+          <div class="box">
+            <div class="box-content four" aria-label="photo four" role="button" tabindex="0"></div>
+          </div>
+          <div class="box">
+            <div class="box-content five" aria-label="photo five" role="button" tabindex="0"></div>
+          </div>
+          <div class="box">
+            <div class="box-content six" aria-label="photo six" role="button" tabindex="0"></div>
+          </div>
+                    <div class="box">
+            <div class="box-content seven" aria-label="photo seven" role="button" tabindex="0"></div>
+          </div>
+          <div class="box">
+            <div class="box-content eight" aria-label="photo eight" role="button" tabindex="0"></div>
+          </div>
+          <div class="box">
+            <div class="box-content nine" aria-label="photo nine" role="button" tabindex="0"></div>
+          </div>
+          <div class="box">
+            <div class="box-content ten" aria-label="photo ten" role="button" tabindex="0"></div>
+          </div>
+          <div class="box">
+            <div class="box-content eleven" aria-label="photo eleven" role="button" tabindex="0"></div>
+          </div>
+          <div class="box">
+            <div class="box-content twelve" aria-label="photo twelve" role="button" tabindex="0"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+
+  <div class="modal" aria-hidden="true">
+    <div class="overlay"></div>
+    <div class="content"></div>
+  </div>
+</Layout>
+
+<style>
+  .wrapper {
+    width: 100%;
+  }
+
+  .boxes-container {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.75rem;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .box {
+    width: 100%;
+    aspect-ratio: 1;
+    padding: 0.35rem;
+    border: 1px dashed #ffffff2d;
+    border-radius: 12px;
+    background: #151515;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+
+  .box-content {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    background-position: center;
+    background-size: cover;
+    cursor: pointer;
+    position: relative;
+    outline: none;
+  }
+
+  .box-content:focus-visible {
+    transform: scale(1.02);
+  }
+
+  .modal {
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    inset: 0;
+    background-color: transparent;
+    z-index: 1100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .modal .content {
+    height: min(80vh, 720px);
+    aspect-ratio: 4 / 5;
+    position: relative;
+    z-index: 1101;
+    max-width: 90vw;
+  }
+
+  .modal .content .box-content {
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 20px 60px #00000080;
+    border-radius: 16px;
+  }
+
+  .overlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    opacity: 0;
+  }
+
+  .box-content.one {
+    background-image: url("/FavPic/photo_2_2026-03-09_18-49-30.jpg");
+  }
+
+  .box-content.two {
+    background-image: url("/FavPic/photo_3_2026-03-09_18-49-30.jpg");
+  }
+
+  .box-content.three {
+    background-image: url("/FavPic/photo_4_2026-03-09_18-49-30.jpg");
+  }
+
+  .box-content.four {
+    background-image: url("/FavPic/photo_9_2026-03-09_18-49-30.jpg");
+  }
+
+  .box-content.five {
+    background-image: url("/FavPic/photo_6_2026-03-09_18-49-30.jpg");
+  }
+
+  .box-content.six {
+    background-image: url("/FavPic/photo_7_2026-03-09_18-49-30.jpg");
+  }
+  .box-content.seven {
+    background-image: url("/FavPic/photo_8_2026-03-09_18-49-30.jpg");
+  }
+
+  .box-content.eight {
+    background-image: url("/FavPic/photo_10_2026-03-09_18-49-30.jpg");
+  }
+
+  .box-content.nine {
+    background-image: url("/FavPic/photo_11_2026-03-09_18-49-30.jpg");
+  }
+
+  .box-content.ten {
+    background-image: url("/FavPic/photo_12_2026-03-09_18-49-30.jpg");
+  }
+  .box-content.eleven {
+    background-image: url("/FavPic/photo_13_2026-03-09_18-49-30.jpg");
+  }
+
+  .box-content.twelve {
+    background-image: url("/FavPic/photo_15_2026-03-09_18-49-30.jpg");
+  }
+
+  @media (max-width: 1024px) {
+    .boxes-container {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 768px) {
+    .boxes-container {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.6rem;
+    }
+
+    .box {
+      padding: 0.28rem;
+    }
+
+    .modal .content {
+      width: min(86vw, 400px);
+      height: auto;
+      max-height: 85vh;
+    }
+  }
+</style>
+
+<script type="module" is:inline>
+  import { gsap } from "https://cdn.jsdelivr.net/npm/gsap@3.12.5/+esm";
+  import { Flip } from "https://cdn.jsdelivr.net/npm/gsap@3.12.5/Flip/+esm";
+
+  gsap.registerPlugin(Flip);
+
+  const modal = document.querySelector(".modal");
+  const modalContent = modal?.querySelector(".content");
+  const modalOverlay = modal?.querySelector(".overlay");
+  const boxes = gsap.utils.toArray(".boxes-container .box");
+  const boxesContent = gsap.utils.toArray(".box-content");
+
+  let boxIndex;
+
+  const toggleBox = (box, i) => {
+    if (!modal || !modalContent || !modalOverlay) return;
+
+    if (boxIndex !== undefined) {
+      const state = Flip.getState(box);
+      boxes[boxIndex].appendChild(box);
+      boxIndex = undefined;
+
+      gsap.to([modal, modalOverlay], {
+        autoAlpha: 0,
+        ease: "power1.inOut",
+        duration: 0.35,
+      });
+
+      Flip.from(state, {
+        duration: 0.7,
+        ease: "power1.inOut",
+        absolute: true,
+        onComplete: () => gsap.set(box, { zIndex: "auto" }),
+      });
+
+      gsap.set(box, { zIndex: 1102 });
+      return;
+    }
+
+    const state = Flip.getState(box);
+    modalContent.appendChild(box);
+    boxIndex = i;
+
+    gsap.set(modal, { autoAlpha: 1 });
+
+    Flip.from(state, {
+      duration: 0.7,
+      absolute: true,
+      ease: "power1.inOut",
+    });
+
+    gsap.to(modalOverlay, {
+      autoAlpha: 0.65,
+      duration: 0.35,
+    });
+  };
+
+  boxesContent.forEach((box, i) => {
+    box.addEventListener("click", () => toggleBox(box, i));
+    box.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        toggleBox(box, i);
+      }
+    });
+  });
+
+  modalOverlay?.addEventListener("click", () => {
+    if (boxIndex === undefined) return;
+    const activeBox = boxesContent[boxIndex];
+    toggleBox(activeBox, boxIndex);
+  });
+</script>

@@ -11,7 +11,7 @@ const CategoryIcons = {
       <path d="M21 3C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3H21ZM20 11H4V19H20V11ZM20 5H4V9H20V5ZM11 6V8H9V6H11ZM7 6V8H5V6H7Z"></path>
     </svg>
   ),
-  "城市探索": (
+  "世界探索": (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
@@ -37,20 +37,20 @@ const SkillsList = () => {
   const [openItem, setOpenItem] = useState<string | null>(null);
 
   const skills = {
-    "软件开发": [
-      "Single Page Applications (SPAs)",
-      "Landing pages and business websites",
-      "Portfolio websites",
-    ],
-    "城市探索": [
-      "Mobile-friendly web apps",
-      "React Native mobile apps",
-    ],
-    "投资分析": [
-      "UI design with Figma & Canva",
-      "UX research & improvements",
-      "Prototyping for websites & mobile apps",
-    ],
+  "软件开发": [
+    "全栈开发",
+    "Bash 自动化脚本",
+    "Tauri 桌面应用开发"
+  ],
+  "世界探索": [
+    "探索世界各地城市文化",
+    "体验不同国家的生活方式"
+  ],
+  "投资分析": [
+    "加密货币市场分析",
+    "全球股票市场研究",
+    "不动产配置",
+  ]
   };
 
   const toggleItem = (item: string) => {

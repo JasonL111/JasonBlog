@@ -1,15 +1,235 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import Nav from "@/components/nav.astro";
-import TravelingSection from "@/components/traveling.astro";
-
 import Footer from "@/components/footer.astro";
+
+const trips = [
+  {
+    date: "2021 · 成都",
+    title: "第一次长线旅行",
+    desc: "背上相机和电脑，开始记录城市里让我心动的角落。",
+  },
+  {
+    date: "2022 · 丽江",
+    title: "慢下来感受节奏",
+    desc: "在古城里边走边拍，把每一段路都当作灵感素材。",
+  },
+  {
+    date: "2023 · 厦门",
+    title: "海边工作流",
+    desc: "白天写代码，傍晚看海，重新找回稳定输出的状态。",
+  },
+  {
+    date: "2024 · 重庆",
+    title: "城市夜景计划",
+    desc: "用一周时间记录山城夜色，也顺便梳理了博客方向。",
+  },
+];
 ---
 
-<Layout title="Traveling | Zeno's Manor">
+<Layout title="Traveling | Jason's Manor">
   <Nav />
   <main class="pt-20">
-    <TravelingSection />
+    <section id="traveling" class="py-16 border-t border-[#ffffff10] text-[var(--white)]">
+      <div class="max-w-5xl mx-auto">
+        <h2 class="text-lg text-[var(--sec)] mb-2">On the road</h2>
+        <h3 class="text-4xl md:text-5xl font-medium mb-10">Traveling</h3>
+
+        <div class="travel-timeline">
+          {
+            trips.map((trip, index) => (
+              <article class={`travel-item ${index % 2 === 0 ? "left" : "right"}`}>
+                <div class="travel-card">
+                  <time class="travel-date">{trip.date}</time>
+                  <h4>{trip.title}</h4>
+                  <p>{trip.desc}</p>
+                </div>
+              </article>
+            ))
+          }
+
+          <div class="timeline-end" aria-hidden="true">↓</div>
+        </div>
+
+        <section class="world-project mt-14">
+          <video class="world-video" autoplay muted loop playsinline>
+            <source src="/videos/world-project.mp4" type="video/mp4" />
+          </video>
+          <div class="video-overlay"></div>
+          <div class="video-text">
+            <h4>The World Project挑战进行中</h4>
+            <p>足迹遍布八大洲</p>
+          </div>
+        </section>
+      </div>
+    </section>
   </main>
   <Footer />
 </Layout>
+
+<style>
+  .travel-timeline {
+    position: relative;
+    padding: 1rem 0 3.2rem;
+  }
+
+  .travel-timeline::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 2px;
+    height: calc(100% - 1.6rem);
+    background: #ffffff2a;
+    transform: translateX(-50%);
+  }
+
+  .timeline-end {
+    position: absolute;
+    left: 50%;
+    bottom: -0.2rem;
+    transform: translateX(-50%);
+    font-size: 1.6rem;
+    color: var(--sec);
+    line-height: 1;
+  }
+
+  .travel-item {
+    width: 50%;
+    position: relative;
+    padding: 1rem 2rem;
+  }
+
+  .travel-item::before {
+    content: "";
+    position: absolute;
+    top: 1.75rem;
+    width: 0.85rem;
+    height: 0.85rem;
+    border-radius: 999px;
+    background: var(--sec);
+    box-shadow: 0 0 12px #a476ff80;
+  }
+
+  .travel-item.left {
+    left: 0;
+    text-align: right;
+  }
+
+  .travel-item.left::before {
+    right: -0.425rem;
+  }
+
+  .travel-item.right {
+    left: 50%;
+    text-align: left;
+  }
+
+  .travel-item.right::before {
+    left: -0.425rem;
+  }
+
+  .travel-card {
+    background: #141414;
+    border: 1px solid #ffffff14;
+    border-radius: 14px;
+    padding: 1.1rem 1.2rem;
+    display: inline-block;
+    max-width: 24rem;
+  }
+
+  .travel-date {
+    color: #bdbdbd;
+    font-size: 0.875rem;
+  }
+
+  .travel-card h4 {
+    margin-top: 0.35rem;
+    margin-bottom: 0.3rem;
+    font-size: 1.1rem;
+  }
+
+  .travel-card p {
+    color: #d4d4d4;
+    line-height: 1.6;
+  }
+
+  .world-project {
+    position: relative;
+    height: 320px;
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid #ffffff14;
+  }
+
+  .world-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .video-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.46);
+  }
+
+  .video-text {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    z-index: 2;
+    padding: 1rem;
+  }
+
+  .video-text h4 {
+    font-size: clamp(1.5rem, 4vw, 2.4rem);
+    font-weight: 700;
+  }
+
+  .video-text p {
+    margin-top: 0.6rem;
+    font-size: clamp(1rem, 2.3vw, 1.35rem);
+    color: #e8e8e8;
+  }
+
+  @media (max-width: 768px) {
+    .travel-timeline::before {
+      left: 0.5rem;
+    }
+
+    .timeline-end {
+      left: 0.5rem;
+      transform: translateX(-50%);
+    }
+
+    .travel-item,
+    .travel-item.left,
+    .travel-item.right {
+      width: 100%;
+      left: 0;
+      text-align: left;
+      padding: 1rem 0 1rem 2rem;
+    }
+
+    .travel-item::before,
+    .travel-item.left::before,
+    .travel-item.right::before {
+      left: 0.075rem;
+      right: auto;
+    }
+
+    .travel-card {
+      max-width: 100%;
+      display: block;
+    }
+
+    .world-project {
+      height: 260px;
+    }
+  }
+</style>
