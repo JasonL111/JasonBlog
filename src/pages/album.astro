@@ -2,6 +2,24 @@
 import Layout from "@/layouts/Layout.astro";
 import Nav from "@/components/nav.astro";
 import Footer from "@/components/footer.astro";
+import { readdir } from "node:fs/promises";
+import path from "node:path";
+
+const albumDirName = "FavPic";
+const albumDir = path.join(process.cwd(), "public", albumDirName);
+
+const imageExts = new Set([".jpg", ".jpeg", ".png", ".webp", ".gif", ".avif"]);
+
+const files = await readdir(albumDir, { withFileTypes: true }).catch(() => []);
+const photos = files
+  .filter((entry) => entry.isFile())
+  .map((entry) => entry.name)
+  .filter((name) => imageExts.has(path.extname(name).toLowerCase()))
+  .sort((a, b) => a.localeCompare(b, "en"))
+  .map((name) => ({
+    name,
+    url: `/${albumDirName}/${encodeURIComponent(name)}`,
+  }));
 ---
 
 <Layout title="Album | Jason's Manor">
@@ -11,46 +29,28 @@ import Footer from "@/components/footer.astro";
       <h2 class="text-lg text-[var(--sec)] mb-2">Visual notes</h2>
       <h1 class="text-4xl md:text-5xl font-medium mb-8 md:mb-10">Album</h1>
 
-      <div class="wrapper">
-        <div class="boxes-container">
-          <div class="box">
-            <div class="box-content one" aria-label="photo one" role="button" tabindex="0"></div>
+      {
+        photos.length === 0 ? (
+          <p class="text-[var(--white-icon)]">请将图片放进 <code>public/{albumDirName}</code> 目录，页面会自动识别并展示。</p>
+        ) : (
+          <div class="wrapper">
+            <div class="boxes-container">
+              {photos.map((photo, index) => (
+                <div class="box">
+                  <div
+                    class="box-content"
+                    style={`background-image: url('${photo.url}');`}
+                    aria-label={`photo ${index + 1}`}
+                    role="button"
+                    tabindex="0"
+                    data-photo-name={photo.name}
+                  ></div>
+                </div>
+              ))}
+            </div>
           </div>
-          <div class="box">
-            <div class="box-content two" aria-label="photo two" role="button" tabindex="0"></div>
-          </div>
-          <div class="box">
-            <div class="box-content three" aria-label="photo three" role="button" tabindex="0"></div>
-          </div>
-          <div class="box">
-            <div class="box-content four" aria-label="photo four" role="button" tabindex="0"></div>
-          </div>
-          <div class="box">
-            <div class="box-content five" aria-label="photo five" role="button" tabindex="0"></div>
-          </div>
-          <div class="box">
-            <div class="box-content six" aria-label="photo six" role="button" tabindex="0"></div>
-          </div>
-                    <div class="box">
-            <div class="box-content seven" aria-label="photo seven" role="button" tabindex="0"></div>
-          </div>
-          <div class="box">
-            <div class="box-content eight" aria-label="photo eight" role="button" tabindex="0"></div>
-          </div>
-          <div class="box">
-            <div class="box-content nine" aria-label="photo nine" role="button" tabindex="0"></div>
-          </div>
-          <div class="box">
-            <div class="box-content ten" aria-label="photo ten" role="button" tabindex="0"></div>
-          </div>
-          <div class="box">
-            <div class="box-content eleven" aria-label="photo eleven" role="button" tabindex="0"></div>
-          </div>
-          <div class="box">
-            <div class="box-content twelve" aria-label="photo twelve" role="button" tabindex="0"></div>
-          </div>
-        </div>
-      </div>
+        )
+      }
     </section>
   </main>
   <Footer />
@@ -138,52 +138,6 @@ import Footer from "@/components/footer.astro";
     height: 100%;
     background-color: black;
     opacity: 0;
-  }
-
-  .box-content.one {
-    background-image: url("/FavPic/photo_2_2026-03-09_18-49-30.jpg");
-  }
-
-  .box-content.two {
-    background-image: url("/FavPic/photo_3_2026-03-09_18-49-30.jpg");
-  }
-
-  .box-content.three {
-    background-image: url("/FavPic/photo_4_2026-03-09_18-49-30.jpg");
-  }
-
-  .box-content.four {
-    background-image: url("/FavPic/photo_9_2026-03-09_18-49-30.jpg");
-  }
-
-  .box-content.five {
-    background-image: url("/FavPic/photo_6_2026-03-09_18-49-30.jpg");
-  }
-
-  .box-content.six {
-    background-image: url("/FavPic/photo_7_2026-03-09_18-49-30.jpg");
-  }
-  .box-content.seven {
-    background-image: url("/FavPic/photo_8_2026-03-09_18-49-30.jpg");
-  }
-
-  .box-content.eight {
-    background-image: url("/FavPic/photo_10_2026-03-09_18-49-30.jpg");
-  }
-
-  .box-content.nine {
-    background-image: url("/FavPic/photo_11_2026-03-09_18-49-30.jpg");
-  }
-
-  .box-content.ten {
-    background-image: url("/FavPic/photo_12_2026-03-09_18-49-30.jpg");
-  }
-  .box-content.eleven {
-    background-image: url("/FavPic/photo_13_2026-03-09_18-49-30.jpg");
-  }
-
-  .box-content.twelve {
-    background-image: url("/FavPic/photo_15_2026-03-09_18-49-30.jpg");
   }
 
   @media (max-width: 1024px) {

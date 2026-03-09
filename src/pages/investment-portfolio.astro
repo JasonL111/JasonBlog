@@ -57,22 +57,33 @@ const slices = displayHoldings.map((item) => {
   };
 });
 
-const recentActions = (portfolio?.recentActions ?? []).slice(0, 3);
+const today = new Intl.DateTimeFormat("en-CA", {
+  timeZone: "Asia/Shanghai",
+}).format(new Date());
+
+const recentActions = (portfolio?.recentActions ?? [])
+  .sort((a, b) => b.date.localeCompare(a.date))
+  .slice(0, 3);
+
+const displayActions =
+  recentActions.find((item) => item.date === today) === undefined
+    ? [{ date: today, action: "暂无操作", detail: "默认状态（今日）" }, ...recentActions].slice(0, 3)
+    : recentActions;
 ---
 
 <Layout title="Investment Portfolio | Jason's Manor">
   <Nav />
-  <main class="max-w-5xl mx-auto pt-28 pb-16 text-[var(--white)]">
+  <main class="max-w-5xl mx-auto px-4 md:px-6 pt-24 md:pt-28 pb-16 text-[var(--white)]">
     <h2 class="text-lg text-[var(--sec)] mb-2">Asset allocation</h2>
     <h1 class="text-4xl md:text-5xl font-medium mb-10">Investment Portfolio</h1>
 
-    <section class="grid md:grid-cols-2 gap-8 items-start">
+    <section class="grid md:grid-cols-2 gap-6 md:gap-8 items-start">
       <div class="card flex justify-center">
         {
           slices.length === 0 ? (
             <p class="text-[var(--white-icon)]">请在 <code>src/content/investments/portfolio.md</code> 填写持仓。</p>
           ) : (
-            <svg viewBox="0 0 300 300" class="w-[280px] h-[280px]">
+            <svg viewBox="0 0 300 300" class="w-full max-w-[280px] aspect-square">
               {slices.map((slice) => (
                 <path d={slice.path} fill={slice.color} stroke="#101010" stroke-width="2" />
               ))}
@@ -101,11 +112,11 @@ const recentActions = (portfolio?.recentActions ?? []).slice(0, 3);
     <section class="card mt-8">
       <h3 class="text-2xl font-semibold mb-4">近期操作</h3>
       {
-        recentActions.length === 0 ? (
-          <p class="text-[var(--white-icon)]">请在同一个持仓 md 中补充 <code>recentActions</code>（最多 3 条）。</p>
+        displayActions.length === 0 ? (
+          <p class="text-[var(--white-icon)]">今日默认会显示“暂无操作”，也可在持仓 md 中补充 <code>recentActions</code>（最多 3 条）。</p>
         ) : (
           <ul class="space-y-3">
-            {recentActions.map((item) => (
+            {displayActions.map((item) => (
               <li class="action-row">
                 <div class="text-sm text-[var(--white-icon)]">{item.date}</div>
                 <div class="font-semibold">{item.action}</div>
