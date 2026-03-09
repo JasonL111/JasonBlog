@@ -1,9 +1,9 @@
 ---
 import { Image } from "astro:assets";
-import svgl from "../../public/svgl.png";
-import stockin from "../../public/stockin.png";
-import moviesfordevs from "../../public/moviesfordevs.png";
-import velez from "../../public/velez.png";
+import DL from "../../public/DL.png";
+import PT from "../../public/PT.png";
+import S3 from "../../public/S3.png";
+import DH from "../../public/DH.png";
 
 interface Project {
   title: string;
@@ -15,32 +15,32 @@ interface Project {
 
 const projects: Project[] = [
   {
-    title: "MoviesForDevs",
-    image: moviesfordevs as ImageMetadata,
-    link: "#",
-    preview: "#",
-    status: "Deployed",
-  },
-  {
-    title: "StockIn",
-    image: stockin as ImageMetadata,
-    link: "#",
-    preview: "#",
-    status: "On Development",
-  },
-  {
-    title: "Svgl.app",
-    image: svgl as ImageMetadata,
-    link: "#",
+    title: "DDNS Lite",
+    image: S3 as ImageMetadata,
+    link: "https://github.com/JasonL111/DDNS_Lite/tree/main",
     preview: "#",
     status: "Contributor",
   },
   {
-    title: "Rifas Velez Web",
-    image: velez as ImageMetadata,
-    link: "#",
+    title: "PT Attendance",
+    image: PT as ImageMetadata,
+    link: "https://github.com/JasonL111/PT_attendance/tree/main",
     preview: "#",
-    status: "Deployed",
+    status: "Contributor",
+  },
+  {
+    title: "S3sign GUI",
+    image: DL as ImageMetadata,
+    link: "https://github.com/JasonL111/S3sign-GUI/tree/main",
+    preview: "#",
+    status: "Contributor",
+  },
+  {
+    title: "Delper",
+    image: DH as ImageMetadata,
+    link: "https://github.com/JasonL111/Delper",
+    preview: "#",
+    status: "Contributor",
   },
 ];
 ---
@@ -117,7 +117,7 @@ const projects: Project[] = [
     </div>
     <a
       target="_blank"
-      href="#"
+      href="https://github.com/JasonL111"
       aria-label="GitHub"
       class="w-full flex items-center justify-center gap-2 mt-9 text-[var(--white-icon)] hover:text-white transition duration-300 ease-in-out border border-[var(--white-icon-tr)] p-3 rounded-full bg-[#1414149c] hover:bg-[var(--white-icon-tr)] hover:scale-105"
     >

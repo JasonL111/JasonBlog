@@ -1,6 +1,13 @@
 # build output
 dist/
 
+# articles
+*.md
+
+# pictures
+
+/public/FavPic
+
 # generated types
 .astro/
 

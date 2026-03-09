@@ -5,8 +5,8 @@ interface Props {
 
 const { title } = Astro.props;
 
-const siteName = "Zeno's Manor";
-const siteDescription = "关于 Zeno 的项目、观点，以及生活近况。";
+const siteName = "Jason's Manor";
+const siteDescription = "关于 Jason 的项目、观点，以及生活近况。";
 const siteUrl = "https://your-domain.com";
 const ogImage = `${siteUrl}/og-image.png`;
 ---
@@ -29,7 +29,7 @@ const ogImage = `${siteUrl}/og-image.png`;
       crossorigin="anonymous"
     />
 
-    <meta property="og:title" content={`${title} | Zeno`} />
+    <meta property="og:title" content={`${title} | Jason`} />
     <meta property="og:description" content={siteDescription} />
     <meta property="og:image" content={ogImage} />
     <meta property="og:url" content={siteUrl} />
@@ -41,8 +41,8 @@ const ogImage = `${siteUrl}/og-image.png`;
       set:html={JSON.stringify({
         "@context": "https://schema.org",
         "@type": "Person",
-        "name": "Zeno",
-        "alternateName": "Zeno",
+        "name": "Jason",
+        "alternateName": "Jason",
         "url": siteUrl,
         "image": ogImage,
         "sameAs": [
