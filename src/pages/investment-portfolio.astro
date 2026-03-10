@@ -77,8 +77,8 @@ const displayActions =
     <h2 class="text-lg text-[var(--sec)] mb-2">Asset allocation</h2>
     <h1 class="text-4xl md:text-5xl font-medium mb-10">Investment Portfolio</h1>
 
-    <section class="grid md:grid-cols-2 gap-6 md:gap-8 items-start">
-      <div class="card flex justify-center">
+    <section class="grid md:grid-cols-2 gap-6 md:gap-8 items-start md:items-stretch">
+      <div class="card flex justify-center items-center pie-card">
         {
           slices.length === 0 ? (
             <p class="text-[var(--white-icon)]">请在 <code>src/content/investments/portfolio.md</code> 填写持仓。</p>
@@ -168,8 +168,12 @@ const displayActions =
 
 
   @media (min-width: 768px) {
+    .pie-card,
     .holdings-card {
-      max-height: 21rem;
+      height: 20.5rem;
+    }
+
+    .holdings-card {
       overflow-y: auto;
       scrollbar-width: thin;
     }
