@@ -67,7 +67,7 @@ const recentActions = (portfolio?.recentActions ?? [])
 
 const displayActions =
   recentActions.find((item) => item.date === today) === undefined
-    ? [{ date: today, action: "暂无操作", detail: "默认状态（今日）" }, ...recentActions].slice(0, 3)
+    ? [{ date: today, action: "暂无操作", detail: "今日暂无操作" }, ...recentActions].slice(0, 3)
     : recentActions;
 ---
 
