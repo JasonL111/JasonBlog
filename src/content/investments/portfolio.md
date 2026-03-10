@@ -1,41 +1,64 @@
 ---
 holdings:
-  - name: MSFT 微软
-    ratio: 20
-    color: "#F7931A"
-    note: 科技
   - name: BRKB 伯克希尔·哈撒韦
     ratio: 15
     color: "#60A5FA"
-    note: 长期防守核心
-  - name: NESN雀巢
-    ratio: 10
-    color: "#FCD34D"
-    note: 消费品
-  - name: BLK 贝莱德
-    ratio: 10
-    color: "#5c00c4"
-    note: 资本巨头
-  - name: UNH 联合健康
-    ratio: 5
-    color: "#428f44"
-    note: 医保必要支出
-  - name: CVX 雪佛龙
-    ratio: 5
-    color: "#8e8898"
-    note: 能源/地缘政治
-  - name: VEEV Veeva系统
-    ratio: 5
-    color: "#367e79"
-    note: 医疗监管垄断
-  - name: RACE 法拉利
-    ratio: 5
-    color: "#bc050b"
-    note: 高利润率奢侈品
+    note: 资本配置/长期防守核心
+
+  - name: MSFT 微软
+    ratio: 14
+    color: "#F7931A"
+    note: 云+AI平台核心
+
   - name: V Visa
     ratio: 10
     color: "#180269"
-    note: 支付系统垄断
+    note: 支付网络核心
+
+  - name: ASML 阿斯麦
+    ratio: 10
+    color: "#2563EB"
+    note: 半导体设备核心
+
+  - name: GOOGL Alphabet
+    ratio: 8
+    color: "#34A853"
+    note: 搜索/广告/云/AI平台
+
+  - name: BLK 贝莱德
+    ratio: 8
+    color: "#5c00c4"
+    note: 资管平台/资本巨头
+
+  - name: MCO 穆迪
+    ratio: 8
+    color: "#7C3AED"
+    note: 评级+数据基础设施
+
+  - name: VEEV Veeva系统
+    ratio: 6
+    color: "#367e79"
+    note: 医药行业垂直SaaS
+
+  - name: RACE 法拉利
+    ratio: 6
+    color: "#bc050b"
+    note: 高利润率奢侈品牌
+
+  - name: NESN 雀巢
+    ratio: 6
+    color: "#FCD34D"
+    note: 防守型消费品
+
+  - name: CVX 雪佛龙
+    ratio: 5
+    color: "#8e8898"
+    note: 能源/通胀/地缘对冲
+
+  - name: UNH 联合健康
+    ratio: 4
+    color: "#428f44"
+    note: 医疗支付观察仓
 
 recentActions:
   - date: "2026-03-09"
